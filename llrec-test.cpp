@@ -66,7 +66,12 @@ void dealloc(Node* head)
 //   Add any helper functions or
 //   function object struct declarations
 // -----------------------------------------------
-
+struct Comp {
+    bool operator()(Node* &cur){
+        if(cur->val % 2 == 0) return true;
+        else return false;
+    }
+};
 
 
 
@@ -86,10 +91,19 @@ int main(int argc, char* argv[])
     print(head);
 
     // Test out your linked list code
+    Comp c;
 
+    Node* nod = llfilter(head, c);
 
+    cout << "After: ";
+    print(nod);
 
-    
+    /* cout << "smaller: " << endl;
+    print(smaller);
+
+    cout << "larger: " << endl;
+    print(larger); */
+
     return 0;
 
 }

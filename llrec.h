@@ -49,6 +49,8 @@ struct Node
  */
 void llpivot(Node *&head, Node *&smaller, Node *&larger, int pivot);
 
+void llpivotHelp(Node *&head, Node *&small, Node *&large, Node *&smaller, Node *& larger, int pivot);
+
 /**
  * Given a linked list pointed to by head, removes (filters out) nodes
  * whose value does not meet the criteria given by the predicate
@@ -72,6 +74,9 @@ void llpivot(Node *&head, Node *&smaller, Node *&larger, int pivot);
 template <typename Comp>
 Node* llfilter(Node* head, Comp pred);
 
+template <typename Comp>
+void llfilterHelp(Node *&head, Node* start, Node* tail, Comp pred);
+
 //*****************************************************************************
 // Since template implementations should be in a header file, we will
 // implement the above function now.
@@ -83,8 +88,41 @@ Node* llfilter(Node* head, Comp pred)
     //*********************************************
     // Provide your implementation below
     //*********************************************
+    Node* start = head;
+		Node* tail = head;
+    llfilterHelp(head, start, tail, pred);
 
+    return head;
+}
 
+template <typename Comp>
+void llfilterHelp(Node* &head, Node* start, Node* tail, Comp pred){
+    if(tail == nullptr){
+      return;
+    }
+
+    if(pred(tail)){
+			if(head == tail){
+        Node* temp = head;
+				head = head->next;
+        delete temp;
+        start = head;
+        tail = head;
+			}
+      
+      else{
+        Node* temp = tail;
+        tail = tail->next;
+        start->next = tail;
+        delete temp;
+      }
+    }
+    else{
+      start = tail;
+      tail = tail->next;
+    } 
+
+    llfilterHelp(head, start, tail, pred);
 }
 
 #endif
