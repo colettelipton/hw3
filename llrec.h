@@ -101,7 +101,7 @@ void llfilterHelp(Node* &head, Node* start, Node* tail, Comp pred){
       return;
     }
 
-    if(pred(tail)){
+    if(pred(tail->val)){
 			if(head == tail){
         Node* temp = head;
 				head = head->next;

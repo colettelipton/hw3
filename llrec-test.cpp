@@ -91,12 +91,19 @@ int main(int argc, char* argv[])
     print(head);
 
     // Test out your linked list code
-    Comp c;
+    Node* small;
+    Node* large;
 
-    Node* nod = llfilter(head, c);
+    llpivot(head, small, large, 4);
 
-    cout << "After: ";
-    print(nod);
+    cout << "Head: {}";
+    print(head);
+
+    cout << "Small: {2}";
+    print(small);
+
+    cout << "large: {4,6}";
+    print(large);
 
     /* cout << "smaller: " << endl;
     print(smaller);

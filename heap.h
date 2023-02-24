@@ -1,7 +1,6 @@
 #ifndef HEAP_H
 #define HEAP_H
 #include <functional>
-// QUESTION: can i include this?
 #include <cmath>
 #include <stdexcept>
 #include <vector>
@@ -49,8 +48,6 @@ public:
    */
   void pop();
 
-  /// returns true if the heap is empty
-
   /**
    * @brief Returns true if the heap is empty
    * 
@@ -71,6 +68,7 @@ private:
 };
 
 // Add implementation of member functions here
+
 template <typename T, typename PComparator>
 Heap<T, PComparator>::Heap(int m, PComparator c){
 	this->m = m;
@@ -124,43 +122,52 @@ void Heap<T,PComparator>::pop()
     throw std::underflow_error("Error: heap is empty");
   }
 
+	if(size() == 1){
+		data.pop_back();
+		return;
+	}
+
 	std::swap(data[0], data[data.size() - 1]);
 	data.pop_back();
     
 	unsigned parent = 0;
   unsigned priority = 1;
 
-	while(true){
-		// iterates through each layer of the tree
-		// iterate through all of the children and use the max element (for example if max heap) to swap
-    // left child = 2i + 1, right child = 2i + 2
-    // m-ary tree = m * i + 1... m * i + m
-		for(int i = 0; i < m; i++){
-			if((m * parent + i + 1 < data.size() && c(data[priority], data[m * parent + i]))){
-				priority = m * parent + i;
+	if(size() > 1){
+		while(priority < size()){
+			// iterates through each layer of the tree
+			// iterate through all of the children and use the max element (for example if max heap) to swap
+			// left child = 2i + 1, right child = 2i + 2
+			// m-ary tree = m * i + 1... m * i + m
+			for(int i = 0; i < m; i++){
+				if((m * parent + (i + 1) < data.size() && c(data[m * parent + (i + 1)], data[priority]))){
+					priority = m * parent + i + 1;
+				}
 			}
+			if(c(data[priority], data[parent])){
+				std::swap(data[parent], data[priority]);
+				parent = priority;
+				priority = m * parent + 1;
+			}
+			else return;
 		}
-		if(c(data[priority], data[parent])){
-      std::swap(data[parent], data[priority]);
-		  parent = priority;
-    }
-    else break;
 	}
 }
 
 template <typename T, typename PComparator>
 void Heap<T,PComparator>::push(T item){
 	data.push_back(item);
-	unsigned last = data.size() - 1;
-	unsigned parent = (last - 1) / m;
-	while(c(data[last], data[parent])){
-		std::swap(data[last], data[parent]);
-		last = parent;
-		parent = (last - 1) / m;
-	}
+  if(data.size() > 1){
+    unsigned last = data.size() - 1;
+	  unsigned parent = (last - 1) / m;
+	  while(last > 0 && parent < data.size() 
+				&& c(data[last], data[parent])){
+		  std::swap(data[parent], data[last]);
+		  last = parent;
+		  parent = (last - 1) / m;
+	  }
+  }	
 }
-
-
 
 #endif
 

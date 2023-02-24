@@ -8,43 +8,45 @@ using namespace std;
 //*********************************************
 
 void llpivot(Node *&head, Node *&smaller, Node *&larger, int pivot){
-		Node* small;
-		Node* large;
+		Node* small = nullptr;
+		Node* large = nullptr;
 		smaller = nullptr;
 		larger = nullptr;
-		llpivotHelp(head, small, large, smaller, larger, pivot);
+		if(head == nullptr) return;
+		llpivotHelp(head, smaller, larger, small, large, pivot);
 }
 
 void llpivotHelp(Node *&head, Node *&small, Node *&large, Node *&smaller, Node *& larger, int pivot){
 	if(head == nullptr){
-		if(!(small == nullptr) && small->next != nullptr) small->next = nullptr;
-		if(!(large == nullptr) && large->next != nullptr) large->next = nullptr;
-		small = nullptr;
-		large = nullptr;
+		if(!(smaller == nullptr)){
+			smaller->next = nullptr;
+		}
+		if(!(larger == nullptr)){
+			larger->next = nullptr;
+		}
 		return;
 	}
-
-	if(smaller == nullptr && head->val <= pivot){
+	if(small == nullptr && head->val <= pivot){
 		smaller = head;
 		small = head;
 	}
 
-	else if(larger == nullptr && head->val > pivot){
+	else if(large == nullptr && head->val > pivot){
 		larger = head;
 		large = head;
 	}
 		
 	else if(head->val <= pivot){
-		small->next = head;
-		small = small->next;
+		smaller->next = head;
+		smaller = smaller->next;
 	}
 			
 	else if(head->val > pivot){
-		large->next = head;
-		large = large->next;
+		larger->next = head;
+		larger = larger->next;
 	}
-	
-	llpivotHelp(head->next, small, large, smaller, larger, pivot);
+	head = head->next;
+	llpivotHelp(head, small, large, smaller, larger, pivot);
 }
 
 
