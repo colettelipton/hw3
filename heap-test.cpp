@@ -18,7 +18,6 @@ int main(){
 	h.push(4);
   h.push(5);
   h.push(8);
-	h.print();
 	h.pop();
   /* 
 	h.push(9);
@@ -30,8 +29,6 @@ int main(){
 	h.push(16);
 	h.push(18);
 	h.push(10); */
-
-  h.print();
 
 	
 }
